@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Number Generator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .dark-mode {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .dark-mode .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prime Number Generator</h1>
+        <div class="form-group">
+            <label for="digits">Number of Digits:</label>
+            <input type="number" class="form-control" id="digits" min="1" required>
+        </div>
+        <button id="generateBtn" class="btn btn-primary">Generate Prime Numbers</button>
+        <button id="toggleModeBtn" class="btn btn-primary mt-3">Toggle Dark Mode</button>
+        <div id="primeNumbers" class="mt-4"></div>
+    </div>
+
+    <!-- Bootstrap & jQuery JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        $(document).ready(function() {
+            // Function to check if a number is prime
+            function isPrime(num) {
+                if (num <= 1) {
+                    return false;
+                }
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                    if (num % i === 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // Function to generate prime numbers based on the number of digits
+            function generatePrimeNumbers(digits) {
+                let start = Math.pow(10, digits - 1);
+                let end = Math.pow(10, digits) - 1;
+                let primeNumbers = [];
+
+                for (let i = start; i <= end; i++) {
+                    if (isPrime(i)) {
+                        primeNumbers.push(i);
+                    }
+                }
+
+                return primeNumbers;
+            }
+
+            // Function to display prime numbers
+            function displayPrimeNumbers(primeNumbers) {
+                let primeNumbersHtml = '';
+                if (primeNumbers.length > 0) {
+                    primeNumbersHtml += '<h3>Prime Numbers:</h3>';
+                    primeNumbersHtml += '<ul>';
+                    primeNumbers.forEach(function(number) {
+                        primeNumbersHtml += '<li>' + number + '</li>';
+                    });
+                    primeNumbersHtml += '</ul>';
+                } else {
+                    primeNumbersHtml += '<p>No prime numbers found.</p>';
+                }
+                $('#primeNumbers').html(primeNumbersHtml);
+            }
+
+            // Generate prime numbers on button click
+            $('#generateBtn').click(function() {
+                let digits = parseInt($('#digits').val());
+                let primeNumbers = generatePrimeNumbers(digits);
+                displayPrimeNumbers(primeNumbers);
+            });
+
+            // Toggle dark mode on button click
+            $('#toggleModeBtn').click(function() {
+                $('body').toggleClass('dark-mode');
+            });
+        });
+    </script>
+</body>
+</html>
